@@ -10,7 +10,8 @@ namespace API_Rest.Data
     {
         public DbSet<Casa> Casas { get; set; }
         public DbSet<Evento> Eventos { get; set; }
-        public DbSet<Usuario> Usuarios {get; set;}   
+        public DbSet<Usuario> Usuarios {get; set;}  
+        public DbSet<Venda> Vendas {get; set;}  
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 

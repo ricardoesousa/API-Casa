@@ -61,10 +61,10 @@ namespace API_Rest.Controllers
             }
             else
             {
-                if (eTemp.Nome != null && eTemp.Capacidade != 0 && eTemp.Ingressos != 0 && eTemp.Data != null && eTemp.Preco != 0 && eTemp.Genero != null && eTemp.Casa != null)
+                if (eTemp.Nome != null && eTemp.Capacidade != 0 && eTemp.Ingressos != 0 && eTemp.Data != null && eTemp.Preco != 0 && eTemp.Genero != null && eTemp.CasaId != 0)
                 {
 
-                    var casa = database.Casas.Where(c => c.Id == eTemp.Id).FirstOrDefault();
+                    var casa = database.Casas.Where(c => c.Id == eTemp.CasaId).FirstOrDefault();
                     if (casa != null)
                     {
 
@@ -81,7 +81,7 @@ namespace API_Rest.Controllers
                         e.Data = eTemp.Data;
                         e.Preco = eTemp.Preco;
                         e.Genero = eTemp.Genero;
-                        e.Casa = database.Casas.First(nomecasa => nomecasa.Id == eTemp.Casa.Id);
+                        e.Casa = database.Casas.First(nomecasa => nomecasa.Id == eTemp.CasaId);
                         database.Eventos.Add(e);
                         database.SaveChanges();
                         Response.StatusCode = 201;
@@ -112,8 +112,6 @@ namespace API_Rest.Controllers
                     var e = database.Eventos.First(etemp => etemp.Id == evento.Id);
                     if (e != null)
                     {
-
-
                         if (evento.Data < DateTime.Now)
                         {
                             Response.StatusCode = 406;
@@ -129,7 +127,7 @@ namespace API_Rest.Controllers
                             e.Data = evento.Data != null ? evento.Data : e.Data;
                             e.Preco = evento.Preco != 0 ? evento.Preco : e.Preco;
                             e.Genero = evento.Genero != null ? evento.Genero : e.Genero;
-                            e.Casa = evento.Casa != null ? evento.Casa : e.Casa;
+                            e.Casa = evento.Casa != null ? evento.Casa : database.Casas.First(nomecasa => nomecasa.Id == evento.Casa.Id);
                             database.SaveChanges();
                             Response.StatusCode = 200;
                             return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
@@ -178,7 +176,7 @@ namespace API_Rest.Controllers
                             Response.StatusCode = 406;
                             return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
                         }
-                        var casa = database.Casas.Where(etemp => etemp.Id == evento.Id).FirstOrDefault();
+                        var casa = database.Casas.Where(c => c.Id == evento.Casa.Id).FirstOrDefault();
                         if (casa != null)
                         {
                             e.Nome = evento.Nome;
@@ -342,15 +340,13 @@ namespace API_Rest.Controllers
         }
         public class EventoTemp
         {
-            public int Id { get; set; }
             public string Nome { get; set; }
             public int Capacidade { get; set; }
             public int Ingressos { get; set; }
             public DateTime Data { get; set; }
             public Decimal Preco { get; set; }
             public string Genero { get; set; }
-
-            public Casa Casa { get; set; }
+            public int CasaId { get; set; }
 
         }
     }

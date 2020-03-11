@@ -80,5 +80,34 @@ namespace API_Rest.Controllers
             }
 
         }
+
+                [HttpGet]
+        public IActionResult Get()
+        {
+                if (database.Usuarios.Count() == 0)
+            {
+                Response.StatusCode = 404;
+                return new ObjectResult(new { msg = "Não há usuários cadastrados!" });
+            }
+            var usuarios = database.Usuarios.Select(u => u.Email).ToList();
+
+            return Ok(usuarios);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                Usuario usuario = database.Usuarios.First(c => c.Id == id);
+                usuario.Senha = "********";
+                return Ok(usuario);
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 404;
+                return new ObjectResult(new { msg = "Usuário não encontrado!" });
+            }
+        }
     }
 }

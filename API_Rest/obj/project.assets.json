@@ -1386,19 +1386,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ricar\\.nuget\\packages\\": {}
+    "C:\\Users\\ROES\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ricar\\OneDrive\\Área de Trabalho\\API-Casa\\API_Rest\\API_Rest.csproj",
+      "projectUniqueName": "C:\\Users\\ROES\\Desktop\\API-Casa\\API_Rest\\API_Rest.csproj",
       "projectName": "API_Rest",
-      "projectPath": "C:\\Users\\ricar\\OneDrive\\Área de Trabalho\\API-Casa\\API_Rest\\API_Rest.csproj",
-      "packagesPath": "C:\\Users\\ricar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ricar\\OneDrive\\Área de Trabalho\\API-Casa\\API_Rest\\obj\\",
+      "projectPath": "C:\\Users\\ROES\\Desktop\\API-Casa\\API_Rest\\API_Rest.csproj",
+      "packagesPath": "C:\\Users\\ROES\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ROES\\Desktop\\API-Casa\\API_Rest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ricar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ROES\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"

@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\ROES\\Desktop\\API_Rest\\API_Rest.csproj",
+  "FilePath": "c:\\Users\\ricar\\OneDrive\\Área de Trabalho\\API-Casa\\API_Rest\\API_Rest.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "3.0",
@@ -96,8 +96,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -194,8 +193,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -286,8 +284,7 @@
             "Documentation": "Specifies the parameter name for the 'NotAuthorized' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -327,8 +324,7 @@
             "Documentation": "Specifies the parameter name for the 'NotAuthorized' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -471,8 +467,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -613,8 +608,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -654,8 +648,7 @@
             "Documentation": "Specifies the parameter name for the 'Authorized' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -695,8 +688,7 @@
             "Documentation": "Specifies the parameter name for the 'Authorized' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -788,8 +780,7 @@
             "Documentation": "Specifies the parameter name for the 'ChildContent' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -829,8 +820,7 @@
             "Documentation": "Specifies the parameter name for the 'ChildContent' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -871,8 +861,7 @@
             "Documentation": "Specifies the parameter name for the 'NotAuthorized' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -912,8 +901,7 @@
             "Documentation": "Specifies the parameter name for the 'NotAuthorized' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -1661,8 +1649,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -1759,8 +1746,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -1800,8 +1786,7 @@
             "Documentation": "Specifies the parameter name for the 'Found' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -1841,8 +1826,7 @@
             "Documentation": "Specifies the parameter name for the 'Found' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -2085,8 +2069,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -2227,8 +2210,7 @@
             "Documentation": "Specifies the parameter name for all child content expressions.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -2268,8 +2250,7 @@
             "Documentation": "Specifies the parameter name for the 'ChildContent' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -2309,8 +2290,7 @@
             "Documentation": "Specifies the parameter name for the 'ChildContent' child content expression.",
             "Diagnostics": [],
             "Metadata": {
-              "Components.ChildContentParameterName": "True",
-              "Common.PropertyName": "Context"
+              "Components.ChildContentParameterName": "True"
             },
             "BoundAttributeParameters": []
           }
@@ -14460,7 +14440,7 @@
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.Razor",
-        "Documentation": "\n            <summary>\n            <see cref=\"T:Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper\" /> implementation targeting elements containing attributes with URL expected values.\n            </summary>\n            <remarks>Resolves URLs starting with '~/' (relative to the application's 'webroot' setting) that are not\n            targeted by other <see cref=\"T:Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper\" />s. Runs prior to other <see cref=\"T:Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper\" />s to ensure\n            application-relative URLs are resolved.</remarks>\n        ",
+        "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": false,
         "TagMatchingRules": [

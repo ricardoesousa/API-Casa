@@ -29,6 +29,7 @@ namespace API_Rest.Controllers
                 Response.StatusCode = 404;
                 return new ObjectResult(new { msg = "Não há eventos cadastrados!" });
             }
+            var casas = database.Casas.ToList();
             var eventos = database.Eventos.ToList();
             return Ok(eventos);
         }
@@ -38,6 +39,7 @@ namespace API_Rest.Controllers
         {
             try
             {
+                var casas = database.Casas.ToList();
                 Evento evento = database.Eventos.First(c => c.Id == id);
                 return Ok(evento);
             }
@@ -62,34 +64,34 @@ namespace API_Rest.Controllers
                 if (eTemp.Nome != null && eTemp.Capacidade != 0 && eTemp.Ingressos != 0 && eTemp.Data != null && eTemp.Preco != 0 && eTemp.Genero != null && eTemp.Casa != null)
                 {
 
-                    //Casa casa = database.Casas.First(c => c.Id == eTemp.Id);
-                    //if (casa != null)
-                    //{
-
-                    if (eTemp.Data < DateTime.Now)
+                    var casa = database.Casas.Where(c => c.Id == eTemp.Id).FirstOrDefault();
+                    if (casa != null)
                     {
-                        Response.StatusCode = 406;
-                        return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
-                    }
 
-                    Evento e = new Evento();
-                    e.Nome = eTemp.Nome;
-                    e.Capacidade = eTemp.Capacidade;
-                    e.Ingressos = eTemp.Ingressos;
-                    e.Data = eTemp.Data;
-                    e.Preco = eTemp.Preco;
-                    e.Genero = eTemp.Genero;
-                    e.Casa = database.Casas.First(nomecasa => nomecasa.Id == eTemp.Casa.Id);
-                    database.Eventos.Add(e);
-                    database.SaveChanges();
-                    Response.StatusCode = 201;
-                    return new ObjectResult(new { msg = "Evento cadastrado com sucesso!" });
-                    //}
-                    //else
-                    //{
-                    //     Response.StatusCode = 400;
-                    //     return new ObjectResult(new { msg = "A casa selecionada não exite!" });
-                    //}
+                        if (eTemp.Data < DateTime.Now)
+                        {
+                            Response.StatusCode = 406;
+                            return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
+                        }
+
+                        Evento e = new Evento();
+                        e.Nome = eTemp.Nome;
+                        e.Capacidade = eTemp.Capacidade;
+                        e.Ingressos = eTemp.Ingressos;
+                        e.Data = eTemp.Data;
+                        e.Preco = eTemp.Preco;
+                        e.Genero = eTemp.Genero;
+                        e.Casa = database.Casas.First(nomecasa => nomecasa.Id == eTemp.Casa.Id);
+                        database.Eventos.Add(e);
+                        database.SaveChanges();
+                        Response.StatusCode = 201;
+                        return new ObjectResult(new { msg = "Evento cadastrado com sucesso!" });
+                    }
+                    else
+                    {
+                        Response.StatusCode = 400;
+                        return new ObjectResult(new { msg = "A casa selecionada não existe!" });
+                    }
                 }
                 else
                 {
@@ -111,21 +113,32 @@ namespace API_Rest.Controllers
                     if (e != null)
                     {
 
+
                         if (evento.Data < DateTime.Now)
                         {
                             Response.StatusCode = 406;
                             return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
                         }
-                        e.Nome = evento.Nome != null ? evento.Nome : e.Nome;
-                        e.Capacidade = evento.Capacidade != 0 ? evento.Capacidade : e.Capacidade;
-                        e.Ingressos = evento.Ingressos != 0 ? evento.Ingressos : e.Ingressos;
-                        e.Data = evento.Data != null ? evento.Data : e.Data;
-                        e.Preco = evento.Preco != 0 ? evento.Preco : e.Preco;
-                        e.Genero = evento.Genero != null ? evento.Genero : e.Genero;
-                        e.Casa = evento.Casa != null ? evento.Casa : e.Casa;
-                        database.SaveChanges();
-                        Response.StatusCode = 200;
-                        return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
+
+                        var casa = database.Casas.Where(etemp => etemp.Id == evento.Id).FirstOrDefault();
+                        if (casa != null)
+                        {
+                            e.Nome = evento.Nome != null ? evento.Nome : e.Nome;
+                            e.Capacidade = evento.Capacidade != 0 ? evento.Capacidade : e.Capacidade;
+                            e.Ingressos = evento.Ingressos != 0 ? evento.Ingressos : e.Ingressos;
+                            e.Data = evento.Data != null ? evento.Data : e.Data;
+                            e.Preco = evento.Preco != 0 ? evento.Preco : e.Preco;
+                            e.Genero = evento.Genero != null ? evento.Genero : e.Genero;
+                            e.Casa = evento.Casa != null ? evento.Casa : e.Casa;
+                            database.SaveChanges();
+                            Response.StatusCode = 200;
+                            return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
+                        }
+                        else
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new { msg = "A casa selecionada não existe!" });
+                        }
                     }
                     else
                     {
@@ -165,17 +178,25 @@ namespace API_Rest.Controllers
                             Response.StatusCode = 406;
                             return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
                         }
-
-                        e.Nome = evento.Nome;
-                        e.Capacidade = evento.Capacidade;
-                        e.Ingressos = evento.Ingressos;
-                        e.Data = evento.Data;
-                        e.Preco = evento.Preco;
-                        e.Genero = evento.Genero;
-                        e.Casa = evento.Casa;
-                        database.SaveChanges();
-                        Response.StatusCode = 200;
-                        return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
+                        var casa = database.Casas.Where(etemp => etemp.Id == evento.Id).FirstOrDefault();
+                        if (casa != null)
+                        {
+                            e.Nome = evento.Nome;
+                            e.Capacidade = evento.Capacidade;
+                            e.Ingressos = evento.Ingressos;
+                            e.Data = evento.Data;
+                            e.Preco = evento.Preco;
+                            e.Genero = evento.Genero;
+                            e.Casa = evento.Casa;
+                            database.SaveChanges();
+                            Response.StatusCode = 200;
+                            return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
+                        }
+                        else
+                        {
+                            Response.StatusCode = 400;
+                            return new ObjectResult(new { msg = "A casa selecionada não existe!" });
+                        }
                     }
                     else
                     {

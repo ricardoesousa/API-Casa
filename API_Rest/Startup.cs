@@ -33,7 +33,7 @@ namespace API_Rest
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
-            string chaveDeSeguranca = "api_ricardo";
+            string chaveDeSeguranca = "school_of_net_manda_muito_bem!";
             var chaveSimetrica = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveDeSeguranca));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

@@ -10,7 +10,7 @@ namespace API_Rest.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CasasController : ControllerBase
     {
 
@@ -51,7 +51,7 @@ namespace API_Rest.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] CasaTemp cTemp)
         {
-            if (cTemp.Nome != null && cTemp.Endereco != null)
+            if (cTemp.Nome != null && cTemp.Endereco != null && cTemp.Nome.Length > 0 && cTemp.Endereco.Length > 0)
             {
                 if (database.Casas.Any(c => c.Nome == cTemp.Nome))
                 {

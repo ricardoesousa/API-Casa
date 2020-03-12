@@ -42,7 +42,7 @@ namespace API_Rest.Controllers
                 {
                     if (usuario.Senha.Equals(credenciais.Senha))
                     {
-                        string chaveDeSeguranca = "api_ricardo";
+                        string chaveDeSeguranca = "school_of_net_manda_muito_bem!";
                         var chaveSimetrica = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveDeSeguranca));
                         var credenciaisDeAcesso = new SigningCredentials(chaveSimetrica, SecurityAlgorithms.HmacSha256Signature);
 
@@ -64,19 +64,19 @@ namespace API_Rest.Controllers
                     else
                     {
                         Response.StatusCode = 401;
-                        return new ObjectResult("a");
+                        return new ObjectResult("Dados Incorretos");
                     }
                 }
                 else
                 {
                     Response.StatusCode = 401;
-                    return new ObjectResult("b");
+                    return new ObjectResult("Usuário não autorizado");
                 }
             }
             catch (Exception e)
             {
                 Response.StatusCode = 401;
-                return new ObjectResult("c" + e.Message);
+                return new ObjectResult("Usuário não autorizado");
             }
 
         }
@@ -89,8 +89,9 @@ namespace API_Rest.Controllers
                 Response.StatusCode = 404;
                 return new ObjectResult(new { msg = "Não há usuários cadastrados!" });
             }
-            var usuarios = database.Usuarios.Select(u => u.Email).ToList();
+            List<UsuarioTemp> usuarios = database.Usuarios.Select(usuario => new UsuarioTemp(usuario.Email)).ToList();
 
+        
             return Ok(usuarios);
         }
 
@@ -100,14 +101,25 @@ namespace API_Rest.Controllers
             try
             {
                 Usuario usuario = database.Usuarios.First(c => c.Id == id);
-                usuario.Senha = "********";
-                return Ok(usuario);
+                UsuarioTemp a = new UsuarioTemp(usuario.Email);
+                return Ok(a);
             }
             catch (Exception e)
             {
                 Response.StatusCode = 404;
                 return new ObjectResult(new { msg = "Usuário não encontrado!" });
             }
+        }
+
+        public class UsuarioTemp
+        {
+            public UsuarioTemp(string email)
+            {
+                Email = email;
+            }
+
+            public string Email { get; set; }
+
         }
     }
 }

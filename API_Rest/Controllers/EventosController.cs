@@ -53,7 +53,6 @@ namespace API_Rest.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] EventoTemp eTemp)
         {
-
             if (database.Casas.Count() == 0)
             {
                 Response.StatusCode = 400;
@@ -67,13 +66,6 @@ namespace API_Rest.Controllers
                     var casa = database.Casas.Where(c => c.Id == eTemp.CasaId).FirstOrDefault();
                     if (casa != null)
                     {
-
-                        if (eTemp.Data < DateTime.Now)
-                        {
-                            Response.StatusCode = 406;
-                            return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
-                        }
-
                         Evento e = new Evento();
                         e.Nome = eTemp.Nome;
                         e.Capacidade = eTemp.Capacidade;
@@ -82,6 +74,11 @@ namespace API_Rest.Controllers
                         e.Preco = eTemp.Preco;
                         e.Genero = eTemp.Genero;
                         e.Casa = database.Casas.First(nomecasa => nomecasa.Id == eTemp.CasaId);
+                        if (eTemp.Data < DateTime.Now)
+                        {
+                            Response.StatusCode = 406;
+                            return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
+                        }
                         database.Eventos.Add(e);
                         database.SaveChanges();
                         Response.StatusCode = 201;
@@ -102,7 +99,7 @@ namespace API_Rest.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Patch(int id, [FromBody]Evento evento)
+        public IActionResult Patch(int id, [FromBody]EventoTemp evento)
         {
             evento.Id = id;
             if (evento.Id > 0)
@@ -112,29 +109,28 @@ namespace API_Rest.Controllers
                     var e = database.Eventos.First(etemp => etemp.Id == evento.Id);
                     if (e != null)
                     {
-                        if (evento.Data < DateTime.Now)
+                        if (database.Casas.Any(etemp => etemp.Id == evento.CasaId))
                         {
-                            Response.StatusCode = 406;
-                            return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
-                        }
-
-                        var casa = database.Casas.Where(etemp => etemp.Id == evento.Id).FirstOrDefault();
-                        if (casa != null)
-                        {
+                            var casa = database.Casas.Where(etemp => etemp.Id == evento.CasaId).FirstOrDefault();
                             e.Nome = evento.Nome != null ? evento.Nome : e.Nome;
                             e.Capacidade = evento.Capacidade != 0 ? evento.Capacidade : e.Capacidade;
                             e.Ingressos = evento.Ingressos != 0 ? evento.Ingressos : e.Ingressos;
                             e.Data = evento.Data != null ? evento.Data : e.Data;
                             e.Preco = evento.Preco != 0 ? evento.Preco : e.Preco;
                             e.Genero = evento.Genero != null ? evento.Genero : e.Genero;
-                            e.Casa = evento.Casa != null ? evento.Casa : database.Casas.First(nomecasa => nomecasa.Id == evento.Casa.Id);
+                            e.Casa = evento.CasaId != 0 ? casa : e.Casa;
+                            if (evento.Data < DateTime.Now)
+                            {
+                                Response.StatusCode = 406;
+                                return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
+                            }
                             database.SaveChanges();
                             Response.StatusCode = 200;
                             return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
                         }
                         else
                         {
-                            Response.StatusCode = 400;
+                            Response.StatusCode = 404;
                             return new ObjectResult(new { msg = "A casa selecionada não existe!" });
                         }
                     }
@@ -143,7 +139,6 @@ namespace API_Rest.Controllers
                         Response.StatusCode = 404;
                         return new ObjectResult(new { msg = "Evento não encontrado!" });
                     }
-
                 }
                 catch
                 {
@@ -160,7 +155,7 @@ namespace API_Rest.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]Evento evento)
+        public IActionResult Put(int id, [FromBody]EventoTemp evento)
         {
             evento.Id = id;
             if (evento.Id > 0)
@@ -168,16 +163,10 @@ namespace API_Rest.Controllers
                 try
                 {
                     var e = database.Eventos.First(etemp => etemp.Id == evento.Id);
-                    if (evento.Nome != null && evento.Capacidade != 0 && evento.Ingressos != 0 && evento.Data != null && evento.Preco != 0 && evento.Genero != null && evento.Casa != null)
+                    if (evento.Nome != null && evento.Capacidade != 0 && evento.Ingressos != 0 && evento.Data != null && evento.Preco != 0 && evento.Genero != null)
                     {
-
-                        if (evento.Data < DateTime.Now)
-                        {
-                            Response.StatusCode = 406;
-                            return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
-                        }
-                        var casa = database.Casas.Where(c => c.Id == evento.Casa.Id).FirstOrDefault();
-                        if (casa != null)
+                        var casa = database.Casas.Where(etemp => etemp.Id == evento.CasaId).FirstOrDefault();
+                        if (database.Casas.Any(etemp => etemp.Id == evento.CasaId))
                         {
                             e.Nome = evento.Nome;
                             e.Capacidade = evento.Capacidade;
@@ -185,7 +174,12 @@ namespace API_Rest.Controllers
                             e.Data = evento.Data;
                             e.Preco = evento.Preco;
                             e.Genero = evento.Genero;
-                            e.Casa = evento.Casa;
+                            e.Casa = database.Casas.First(c => c.Id == evento.CasaId);
+                            if (evento.Data < DateTime.Now)
+                            {
+                                Response.StatusCode = 406;
+                                return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
+                            }
                             database.SaveChanges();
                             Response.StatusCode = 200;
                             return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
@@ -340,6 +334,7 @@ namespace API_Rest.Controllers
         }
         public class EventoTemp
         {
+            public int Id { get; set; }
             public string Nome { get; set; }
             public int Capacidade { get; set; }
             public int Ingressos { get; set; }

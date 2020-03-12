@@ -42,7 +42,7 @@ namespace API_Rest.Controllers
                 {
                     if (usuario.Senha.Equals(credenciais.Senha))
                     {
-                        string chaveDeSeguranca = "school_of_net_manda_muito_bem!";
+                        string chaveDeSeguranca = "api_ricardo";
                         var chaveSimetrica = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chaveDeSeguranca));
                         var credenciaisDeAcesso = new SigningCredentials(chaveSimetrica, SecurityAlgorithms.HmacSha256Signature);
 
@@ -76,7 +76,7 @@ namespace API_Rest.Controllers
             catch (Exception e)
             {
                 Response.StatusCode = 401;
-                return new ObjectResult("c");
+                return new ObjectResult("c" + e.Message);
             }
 
         }

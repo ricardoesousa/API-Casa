@@ -20,13 +20,12 @@ namespace API_Rest.Controllers
             this.database = database;
         }
 
-
         [HttpGet]
         public IActionResult Get()
         {
             try
             {
-                if (database.Eventos.Count() == 0)
+                if (database.Vendas.Count() == 0)
                 {
                     Response.StatusCode = 404;
                     return new ObjectResult(new { msg = "Não há vendas cadastradas!" });
@@ -65,16 +64,21 @@ namespace API_Rest.Controllers
         {
             try
             {
-                if (vTemp.QtdIngressos <= 0)
+                if (vTemp.QtdIngressos < 1)
                 {
                     Response.StatusCode = 400;
                     return new ObjectResult(new { msg = "É necessário informar uma quantidade de ingressos maior que zero!" });
                 }
                 var evento = database.Eventos.Where(v => v.Id == vTemp.EventoId).SingleOrDefault();
-                if (evento != null)
+                if (evento == null)
                 {
                     Response.StatusCode = 404;
                     return new ObjectResult(new { msg = "Evento não encontrado!" });
+                }
+                if (vTemp.QtdIngressos > evento.Capacidade)
+                {
+                    Response.StatusCode = 406;
+                    return new ObjectResult(new { msg = "Quantidade de ingressos é maior que a quantidade disponível" });
                 }
                 Venda v = new Venda();
                 v.Data = DateTime.Now;
@@ -82,7 +86,7 @@ namespace API_Rest.Controllers
                 v.QtdIngressos = vTemp.QtdIngressos;
                 v.Preco = evento.Preco;
                 v.Total = evento.Preco * vTemp.QtdIngressos;
-                evento.Ingressos = evento.Ingressos - v.QtdIngressos;
+                evento.Capacidade = evento.Capacidade - v.QtdIngressos;
                 database.Vendas.Add(v);
                 database.SaveChanges();
                 Response.StatusCode = 201;
@@ -95,12 +99,10 @@ namespace API_Rest.Controllers
             }
         }
 
-
         public class VendaTemp
         {
             public int EventoId { get; set; }
             public int QtdIngressos { get; set; }
-
         }
     }
 }

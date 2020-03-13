@@ -22,6 +22,9 @@ namespace API_Rest.Controllers
             this.database = database;
         }
 
+        /// <summary>
+        /// Registrar um Usuário.
+        /// </summary>
         [HttpPost("registro")]
         public IActionResult Registro([FromBody] Usuario usuario)
         {
@@ -37,6 +40,7 @@ namespace API_Rest.Controllers
                     Response.StatusCode = 406;
                     return new ObjectResult(new { msg = "Email já cadastrado, favor informar sua senha na área de login!" });
                 }
+                usuario.Id = 0;
                 database.Add(usuario);
                 database.SaveChanges();
                 return Ok(new { msg = "Usuário cadastrado com sucesso" });
@@ -48,6 +52,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Login de Usuários
+        /// </summary>
         [HttpPost("Login")]
         public IActionResult Login([FromBody] Usuario credenciais)
         {
@@ -89,6 +96,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Usuários.
+        /// </summary>
         [HttpGet]
         public IActionResult Get()
         {
@@ -99,7 +109,7 @@ namespace API_Rest.Controllers
                     Response.StatusCode = 404;
                     return new ObjectResult(new { msg = "Não há usuários cadastrados!" });
                 }
-                List<UsuarioTemp> usuarios = database.Usuarios.Select(usuario => new UsuarioTemp(usuario.Email)).ToList();
+                List<UsuarioTemp> usuarios = database.Usuarios.Select(usuario => new UsuarioTemp(usuario)).ToList();
                 return Ok(usuarios);
             }
             catch
@@ -109,13 +119,16 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Usuários por Id.
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             try
             {
                 Usuario usuario = database.Usuarios.First(c => c.Id == id);
-                UsuarioTemp a = new UsuarioTemp(usuario.Email);
+                UsuarioTemp a = new UsuarioTemp(usuario);
                 return Ok(a);
             }
             catch
@@ -127,10 +140,12 @@ namespace API_Rest.Controllers
 
         public class UsuarioTemp
         {
-            public UsuarioTemp(string email)
+            public UsuarioTemp(Usuario usuario)
             {
-                Email = email;
+                Id = usuario.Id;
+                Email = usuario.Email;
             }
+            public int Id { get; set; }
             public string Email { get; set; }
         }
     }

@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace API_Rest
 {
@@ -52,6 +54,9 @@ namespace API_Rest
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "API GERENCIADOR DE EVENTOS", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
                 config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",

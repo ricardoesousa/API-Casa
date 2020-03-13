@@ -20,6 +20,9 @@ namespace API_Rest.Controllers
             this.database = database;
         }
 
+        /// <summary>
+        /// Listar Vendas.
+        /// </summary>
         [HttpGet]
         public IActionResult Get()
         {
@@ -42,6 +45,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Vends por Id.
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -59,6 +65,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar Vendas.
+        /// </summary>
         [HttpPost]
         public IActionResult Post([FromBody] VendaTemp vTemp)
         {

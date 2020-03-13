@@ -19,6 +19,9 @@ namespace API_Rest.Controllers
             this.database = database;
         }
 
+        /// <summary>
+        /// Listar Casas.
+        /// </summary>
         [HttpGet]
         public IActionResult Get()
         {
@@ -38,7 +41,9 @@ namespace API_Rest.Controllers
                 return new ObjectResult(new { msg = "Requisição Inválida!" });
             }
         }
-
+        /// <summary>
+        /// Listar Casas por Id.
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -54,6 +59,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar Casas.
+        /// </summary>
         [HttpPost]
         public IActionResult Post([FromBody] CasaTemp cTemp)
         {
@@ -84,12 +92,25 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Alterar um ou mais campos de Casa.
+        /// </summary>
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, [FromBody]Casa casa)
         {
             casa.Id = id;
             try
             {
+                if (database.Casas.Any(c => c.Nome == casa.Nome))
+                {
+                    Response.StatusCode = 406;
+                    return new ObjectResult(new { msg = "O nome da casa já foi utilizado, favor escolher outro" });
+                }
+                if (casa.Nome == null && casa.Endereco == null && casa.Nome.Length < 1 && casa.Endereco.Length < 1)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new { msg = "não houve nenhuma alteração!" });
+                }
                 var c = database.Casas.First(ctemp => ctemp.Id == casa.Id);
                 c.Nome = casa.Nome != null && casa.Nome.Length > 0 ? casa.Nome : c.Nome;
                 c.Endereco = casa.Endereco != null && casa.Endereco.Length > 0 ? casa.Endereco : c.Endereco;
@@ -104,6 +125,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Alterar todos os campos de Casa.
+        /// </summary>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Casa casa)
         {
@@ -115,6 +139,11 @@ namespace API_Rest.Controllers
                 {
                     Response.StatusCode = 400;
                     return new ObjectResult(new { msg = "todos os campos são de preenchimento obrigatório!" });
+                }
+                if (database.Casas.Any(c => c.Nome == casa.Nome))
+                {
+                    Response.StatusCode = 406;
+                    return new ObjectResult(new { msg = "O nome da casa já foi utilizado, favor escolher outro" });
                 }
                 c.Nome = casa.Nome;
                 c.Endereco = casa.Endereco;
@@ -130,6 +159,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletar uma Casa.
+        /// </summary>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -147,6 +179,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Casas em Ordem Crescente por Nome.
+        /// </summary>
         [HttpGet("asc")]
         public IActionResult Listar_Asc()
         {
@@ -167,6 +202,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Casas em Ordem Decrescente por Nome
+        /// </summary>
         [HttpGet("desc")]
         public IActionResult Listar_Desc()
         {
@@ -187,6 +225,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Buscar Casas por Nome.
+        /// </summary>
         [HttpGet("nome/{nome}")]
         public IActionResult Busca_Nome(string nome)
         {

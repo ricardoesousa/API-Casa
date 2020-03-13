@@ -20,7 +20,9 @@ namespace API_Rest.Controllers
             this.database = database;
         }
 
-
+        /// <summary>
+        /// Listar Eventos.
+        /// </summary>
         [HttpGet]
         public IActionResult Get()
         {
@@ -42,6 +44,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos por Id.
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -58,44 +63,57 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar Eventos.
+        /// </summary>
         [HttpPost]
         public IActionResult Post([FromBody] EventoTemp eTemp)
         {
-            if (database.Casas.Count() == 0)
+            try
+            {
+                if (database.Casas.Count() == 0)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new { msg = "Não é possível cadastrar um evento sem uma casa cadastrada" });
+                }
+                if (eTemp.Nome == null || eTemp.Nome.Length < 1 || eTemp.Capacidade == 0 || eTemp.Data == null || eTemp.Preco == 0 || eTemp.Genero == null || eTemp.Genero.Length < 1 || eTemp.CasaId == 0)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new { msg = "Todos os dados são de preenchimento obrigatório ou não podem ter valor zero!" });
+                }
+                if (eTemp.Data < DateTime.Now)
+                {
+                    Response.StatusCode = 406;
+                    return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
+                }
+                var casa = database.Casas.Where(c => c.Id == eTemp.CasaId).FirstOrDefault();
+                if (casa == null)
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new { msg = "A casa selecionada não existe!" });
+                }
+                Evento e = new Evento();
+                e.Nome = eTemp.Nome;
+                e.Capacidade = eTemp.Capacidade;
+                e.Data = eTemp.Data;
+                e.Preco = eTemp.Preco;
+                e.Genero = eTemp.Genero;
+                e.Casa = database.Casas.First(c => c.Id == eTemp.CasaId);
+                database.Eventos.Add(e);
+                database.SaveChanges();
+                Response.StatusCode = 201;
+                return new ObjectResult(new { msg = "Evento cadastrado com sucesso!" });
+            }
+            catch
             {
                 Response.StatusCode = 400;
-                return new ObjectResult(new { msg = "Não é possível cadastrar um evento sem uma casa cadastrada" });
+                return new ObjectResult(new { msg = "Requisição Inválida!" });
             }
-            if (eTemp.Nome == null || eTemp.Nome.Length < 1 || eTemp.Capacidade == 0 || eTemp.Data == null || eTemp.Preco == 0 || eTemp.Genero == null || eTemp.Genero.Length < 1 || eTemp.CasaId == 0)
-            {
-                Response.StatusCode = 400;
-                return new ObjectResult(new { msg = "Todos os dados são de preenchimento obrigatório!" });
-            }
-            if (eTemp.Data < DateTime.Now)
-            {
-                Response.StatusCode = 406;
-                return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
-            }
-            var casa = database.Casas.Where(c => c.Id == eTemp.CasaId).FirstOrDefault();
-            if (casa == null)
-            {
-                Response.StatusCode = 400;
-                return new ObjectResult(new { msg = "A casa selecionada não existe!" });
-            }
-            Evento e = new Evento();
-            e.Nome = eTemp.Nome;
-            e.Capacidade = eTemp.Capacidade;
-            e.Data = eTemp.Data;
-            e.Preco = eTemp.Preco;
-            e.Genero = eTemp.Genero;
-            e.Casa = database.Casas.First(c => c.Id == eTemp.CasaId);
-            database.Eventos.Add(e);
-            database.SaveChanges();
-            Response.StatusCode = 201;
-            return new ObjectResult(new { msg = "Evento cadastrado com sucesso!" });
-
         }
 
+        /// <summary>
+        /// Alterar um ou mais campos de Evento.
+        /// </summary>
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, [FromBody]EventoTemp evento)
         {
@@ -103,29 +121,26 @@ namespace API_Rest.Controllers
             try
             {
                 var e = database.Eventos.First(etemp => etemp.Id == evento.Id);
-                if (e != null)
-                {
-                        var casa = database.Casas.Where(etemp => etemp.Id == evento.CasaId).FirstOrDefault();
-                        e.Nome = evento.Nome != null ? evento.Nome : e.Nome;
-                        e.Capacidade = evento.Capacidade != 0 ? evento.Capacidade : e.Capacidade;
-                        e.Data = evento.Data != null ? evento.Data : e.Data;
-                        e.Preco = evento.Preco != 0 ? evento.Preco : e.Preco;
-                        e.Genero = evento.Genero != null ? evento.Genero : e.Genero;
-                        e.Casa = casa != null ? casa : e.Casa;
-                        if (evento.Data < DateTime.Now)
-                        {
-                            Response.StatusCode = 406;
-                            return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
-                        }
-                        database.SaveChanges();
-                        Response.StatusCode = 200;
-                        return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
-                }
-                else
+                if (e == null)
                 {
                     Response.StatusCode = 404;
                     return new ObjectResult(new { msg = "Evento não encontrado!" });
                 }
+                if (evento.Data < DateTime.Now)
+                {
+                    Response.StatusCode = 406;
+                    return new ObjectResult(new { msg = "A data não pode ser anterior a data atual!" });
+                }
+                var casa = database.Casas.Where(etemp => etemp.Id == evento.CasaId).FirstOrDefault();
+                e.Nome = evento.Nome != null && evento.Nome.Length > 0 ? evento.Nome : e.Nome;
+                e.Capacidade = evento.Capacidade != 0 ? evento.Capacidade : e.Capacidade;
+                e.Data = evento.Data != null ? evento.Data : e.Data;
+                e.Preco = evento.Preco != 0 ? evento.Preco : e.Preco;
+                e.Genero = evento.Genero != null && evento.Genero.Length > 0 ? evento.Genero : e.Genero;
+                e.Casa = casa != null ? casa : e.Casa;
+                database.SaveChanges();
+                Response.StatusCode = 200;
+                return new ObjectResult(new { msg = "Evento atualizado com sucesso!" });
             }
             catch
             {
@@ -134,6 +149,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Alterar todos os campos de Eventos.
+        /// </summary>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]EventoTemp evento)
         {
@@ -144,7 +162,7 @@ namespace API_Rest.Controllers
                 if (evento.Nome == null || evento.Nome.Length < 1 || evento.Capacidade == 0 || evento.Data == null || evento.Preco == 0 || evento.Genero == null || evento.Genero.Length < 1)
                 {
                     Response.StatusCode = 400;
-                    return new ObjectResult(new { msg = "Todos os campos são de preenchimento obrigatório!" });
+                    return new ObjectResult(new { msg = "Todos os campos são de preenchimento obrigatório ou não podem ter valor zero!" });
                 }
                 var casa = database.Casas.Where(etemp => etemp.Id == evento.CasaId).FirstOrDefault();
                 if (!database.Casas.Any(etemp => etemp.Id == evento.CasaId))
@@ -174,6 +192,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletar Eventos.
+        /// </summary>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -191,7 +212,9 @@ namespace API_Rest.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Listar Eventos em Ordem Crescente por Capacidade
+        /// </summary>
         [HttpGet("capacidade/asc")]
         public IActionResult Listar_Capacidade_Asc()
         {
@@ -213,6 +236,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos em Ordem Decrescente por Capacidade
+        /// </summary>
         [HttpGet("capacidade/desc")]
         public IActionResult Listar_Capacidade_Desc()
         {
@@ -234,6 +260,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos em Ordem Crescente por Data
+        /// </summary>
         [HttpGet("data/asc")]
         public IActionResult Listar_Data_Asc()
         {
@@ -255,6 +284,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos em Ordem Decrescente por Data
+        /// </summary>
         [HttpGet("data/desc")]
         public IActionResult Listar_Data_Desc()
         {
@@ -276,6 +308,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos em Ordem Crescente por Nome
+        /// </summary>
         [HttpGet("nome/asc")]
         public IActionResult Listar_Nome_Asc()
         {
@@ -297,6 +332,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos em Ordem Decrescente por Nome
+        /// </summary>
         [HttpGet("nome/desc")]
         public IActionResult Listar_Nome_Desc()
         {
@@ -318,6 +356,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos em Ordem Crescente por Preço
+        /// </summary>
         [HttpGet("preco/asc")]
         public IActionResult Listar_Preco_Asc()
         {
@@ -339,6 +380,9 @@ namespace API_Rest.Controllers
             }
         }
 
+        /// <summary>
+        /// Listar Eventos em Ordem Decrescente por Preço
+        /// </summary>
         [HttpGet("preco/desc")]
         public IActionResult Listar_Preco_Desc()
         {

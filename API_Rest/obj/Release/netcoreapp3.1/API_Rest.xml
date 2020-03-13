@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API_Rest</name>
+    </assembly>
+    <members>
+        <member name="M:API_Rest.Controllers.CasasController.Get">
+            <summary>
+            Listar Casas.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Get(System.Int32)">
+            <summary>
+            Listar Casas por Id.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Post(API_Rest.Controllers.CasasController.CasaTemp)">
+            <summary>
+            Cadastrar Casas.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Patch(System.Int32,API_Rest.Models.Casa)">
+            <summary>
+            Alterar um ou mais campos de Casa.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Put(System.Int32,API_Rest.Models.Casa)">
+            <summary>
+            Alterar todos os campos de Casa.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Delete(System.Int32)">
+            <summary>
+            Deletar uma Casa.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Listar_Asc">
+            <summary>
+            Listar Casas em Ordem Crescente por Nome.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Listar_Desc">
+            <summary>
+            Listar Casas em Ordem Decrescente por Nome
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.CasasController.Busca_Nome(System.String)">
+            <summary>
+            Buscar Casas por Nome.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Get">
+            <summary>
+            Listar Eventos.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Get(System.Int32)">
+            <summary>
+            Listar Eventos por Id.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Post(API_Rest.Controllers.EventosController.EventoTemp)">
+            <summary>
+            Cadastrar Eventos.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Patch(System.Int32,API_Rest.Controllers.EventosController.EventoTemp)">
+            <summary>
+            Alterar um ou mais campos de Evento.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Put(System.Int32,API_Rest.Controllers.EventosController.EventoTemp)">
+            <summary>
+            Alterar todos os campos de Eventos.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Delete(System.Int32)">
+            <summary>
+            Deletar Eventos.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Capacidade_Asc">
+            <summary>
+            Listar Eventos em Ordem Crescente por Capacidade
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Capacidade_Desc">
+            <summary>
+            Listar Eventos em Ordem Decrescente por Capacidade
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Data_Asc">
+            <summary>
+            Listar Eventos em Ordem Crescente por Data
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Data_Desc">
+            <summary>
+            Listar Eventos em Ordem Decrescente por Data
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Nome_Asc">
+            <summary>
+            Listar Eventos em Ordem Crescente por Nome
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Nome_Desc">
+            <summary>
+            Listar Eventos em Ordem Decrescente por Nome
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Preco_Asc">
+            <summary>
+            Listar Eventos em Ordem Crescente por Preço
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.EventosController.Listar_Preco_Desc">
+            <summary>
+            Listar Eventos em Ordem Decrescente por Preço
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.UsuariosController.Registro(API_Rest.Models.Usuario)">
+            <summary>
+            Registrar um Usuário.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.UsuariosController.Login(API_Rest.Models.Usuario)">
+            <summary>
+            Login de Usuários
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.UsuariosController.Get">
+            <summary>
+            Listar Usuários.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.UsuariosController.Get(System.Int32)">
+            <summary>
+            Listar Usuários por Id.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.VendasController.Get">
+            <summary>
+            Listar Vendas.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.VendasController.Get(System.Int32)">
+            <summary>
+            Listar Vends por Id.
+            </summary>
+        </member>
+        <member name="M:API_Rest.Controllers.VendasController.Post(API_Rest.Controllers.VendasController.VendaTemp)">
+            <summary>
+            Cadastrar Vendas.
+            </summary>
+        </member>
+    </members>
+</doc>

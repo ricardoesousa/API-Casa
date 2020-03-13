@@ -59,7 +59,7 @@ namespace API_Rest
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Digite Bearer + espaço + Token para validar a entrada no sistema"
+                    Description = "Digite bearer + espaço + Token para validar a autenticação no sistema"
                 });
                 config.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {

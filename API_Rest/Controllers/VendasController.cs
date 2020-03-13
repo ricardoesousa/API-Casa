@@ -24,15 +24,23 @@ namespace API_Rest.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            if (database.Eventos.Count() == 0)
+            try
             {
-                Response.StatusCode = 404;
-                return new ObjectResult(new { msg = "Não há vendas cadastrados!" });
+                if (database.Eventos.Count() == 0)
+                {
+                    Response.StatusCode = 404;
+                    return new ObjectResult(new { msg = "Não há vendas cadastradas!" });
+                }
+                var vendas = database.Vendas.ToList();
+                var eventos = database.Eventos.ToList();
+                var casas = database.Casas.ToList();
+                return Ok(vendas);
             }
-            var vendas = database.Vendas.ToList();
-            var eventos = database.Eventos.ToList();
-            var casas = database.Casas.ToList();
-            return Ok(vendas);
+            catch
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new { msg = "Requisição Inválida!" });
+            }
         }
 
         [HttpGet("{id}")]
@@ -45,7 +53,7 @@ namespace API_Rest.Controllers
                 var casas = database.Casas.ToList();
                 return Ok(venda);
             }
-            catch (Exception e)
+            catch
             {
                 Response.StatusCode = 404;
                 return new ObjectResult(new { msg = "Venda não encontrada!" });
@@ -55,34 +63,35 @@ namespace API_Rest.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] VendaTemp vTemp)
         {
-            if (vTemp.QtdIngressos > 0)
+            try
             {
-                var evento = database.Eventos.Where(v => v.Id == vTemp.EventoId).SingleOrDefault();
-
-                if (evento != null)
+                if (vTemp.QtdIngressos <= 0)
                 {
-                    Venda v = new Venda();
-                    v.Data = DateTime.Now;
-                    v.Evento = evento;
-                    v.QtdIngressos = vTemp.QtdIngressos;
-                    v.Preco = evento.Preco;
-                    v.Total = evento.Preco * vTemp.QtdIngressos;
-                    evento.Ingressos = evento.Ingressos - v.QtdIngressos;
-                    database.Vendas.Add(v);
-                    database.SaveChanges();
-                    Response.StatusCode = 201;
-                    return new ObjectResult(new { msg = "Venda cadastrada com sucesso!" });
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new { msg = "É necessário informar uma quantidade de ingressos maior que zero!" });
                 }
-                else
+                var evento = database.Eventos.Where(v => v.Id == vTemp.EventoId).SingleOrDefault();
+                if (evento != null)
                 {
                     Response.StatusCode = 404;
                     return new ObjectResult(new { msg = "Evento não encontrado!" });
                 }
+                Venda v = new Venda();
+                v.Data = DateTime.Now;
+                v.Evento = evento;
+                v.QtdIngressos = vTemp.QtdIngressos;
+                v.Preco = evento.Preco;
+                v.Total = evento.Preco * vTemp.QtdIngressos;
+                evento.Ingressos = evento.Ingressos - v.QtdIngressos;
+                database.Vendas.Add(v);
+                database.SaveChanges();
+                Response.StatusCode = 201;
+                return new ObjectResult(new { msg = "Venda cadastrada com sucesso!" });
             }
-            else
+            catch
             {
                 Response.StatusCode = 400;
-                return new ObjectResult(new { msg = "É necessário informar uma quantidade de ingressos maior que zero!" });
+                return new ObjectResult(new { msg = "Requisição Inválida!" });
             }
         }
 

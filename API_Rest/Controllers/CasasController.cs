@@ -13,24 +13,30 @@ namespace API_Rest.Controllers
     [Authorize]
     public class CasasController : ControllerBase
     {
-
         private readonly ApplicationDbContext database;
         public CasasController(ApplicationDbContext database)
         {
             this.database = database;
         }
 
-
         [HttpGet]
         public IActionResult Get()
         {
-                if (database.Casas.Count() == 0)
+            try
             {
-                Response.StatusCode = 404;
-                return new ObjectResult(new { msg = "Não há casas cadastradas!" });
+                if (database.Casas.Count() == 0)
+                {
+                    Response.StatusCode = 404;
+                    return new ObjectResult(new { msg = "Não há casas cadastradas!" });
+                }
+                var casas = database.Casas.ToList();
+                return Ok(casas);
             }
-            var casas = database.Casas.ToList();
-            return Ok(casas);
+            catch
+            {
+                Response.StatusCode = 400;
+                return new ObjectResult(new { msg = "Requisição Inválida!" });
+            }
         }
 
         [HttpGet("{id}")]
@@ -51,11 +57,16 @@ namespace API_Rest.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] CasaTemp cTemp)
         {
-            if (cTemp.Nome != null && cTemp.Endereco != null && cTemp.Nome.Length > 0 && cTemp.Endereco.Length > 0)
+            try
             {
+                if (cTemp.Nome == null || cTemp.Endereco == null || cTemp.Nome.Length < 1 || cTemp.Endereco.Length < 1)
+                {
+                    Response.StatusCode = 406;
+                    return new ObjectResult(new { msg = "Todos os dados são de preenchimento obrigatório!" });
+                }
                 if (database.Casas.Any(c => c.Nome == cTemp.Nome))
                 {
-                    Response.StatusCode = 409;
+                    Response.StatusCode = 406;
                     return new ObjectResult(new { msg = "O nome da casa já foi utilizado, favor escolher outro" });
                 }
                 Casa c = new Casa();
@@ -66,48 +77,40 @@ namespace API_Rest.Controllers
                 Response.StatusCode = 201;
                 return new ObjectResult(new { msg = "Casa cadastrada com sucesso!" });
             }
-            else
+            catch
             {
                 Response.StatusCode = 400;
-                return new ObjectResult(new { msg = "Todos os dados são de preenchimento obrigatório!" });
+                return new ObjectResult(new { msg = "Requisição Inválida!" });
             }
         }
 
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, [FromBody]Casa casa)
         {
-            casa.Id = id;
-            if (casa.Id > 0)
+            try
             {
-                try
-                {
-                    var c = database.Casas.First(ctemp => ctemp.Id == casa.Id);
-                    if (c != null)
-                    {
-                        c.Nome = casa.Nome != null ? casa.Nome : c.Nome;
-                        c.Endereco = casa.Endereco != null ? casa.Endereco : c.Endereco;
-                        database.SaveChanges();
-                        Response.StatusCode = 200;
-                        return new ObjectResult(new { msg = "Casa alterada com sucesso!" });
-                    }
-                    else
-                    {
-                        Response.StatusCode = 404;
-                        return new ObjectResult(new { msg = "casa não encontrada!" });
-                    }
-
-                }
-                catch
+                casa.Id = id;
+                // if (!database.Casas.Any(c => c.Id == id))
+                // {
+                //     Response.StatusCode = 400;
+                //     return new ObjectResult(new { msg = "O Id da casa é inválido!" });
+                // }
+                var c = database.Casas.First(ctemp => ctemp.Id == casa.Id);
+                if (c == null)
                 {
                     Response.StatusCode = 404;
                     return new ObjectResult(new { msg = "casa não encontrada!" });
                 }
+                c.Nome = casa.Nome != null && casa.Nome.Length > 0 ? casa.Nome : c.Nome;
+                c.Endereco = casa.Endereco != null && casa.Endereco.Length > 0 ? casa.Endereco : c.Endereco;
+                database.SaveChanges();
+                Response.StatusCode = 200;
+                return new ObjectResult(new { msg = "Casa alterada com sucesso!" });
             }
-            else
+            catch
             {
                 Response.StatusCode = 400;
-                return new ObjectResult(new { msg = "O Id da casa é inválido!" });
-
+                return new ObjectResult(new { msg = "Requisição Inválida!" });
             }
         }
 
@@ -195,7 +198,7 @@ namespace API_Rest.Controllers
         [HttpGet("nome/{nome}")]
         public IActionResult Busca_Nome(string nome)
         {
-            
+
             if (nome.Length > 0)
             {
                 try

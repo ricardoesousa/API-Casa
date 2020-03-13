@@ -206,3 +206,8 @@ C:\Users\ROES\Desktop\API-Casa\API_Rest\obj\Debug\netcoreapp3.1\API_Rest.RazorTa
 C:\Users\ROES\Desktop\API-Casa\API_Rest\obj\Debug\netcoreapp3.1\API_Rest.csproj.CopyComplete
 C:\Users\ROES\Desktop\API-Casa\API_Rest\obj\Debug\netcoreapp3.1\API_Rest.dll
 C:\Users\ROES\Desktop\API-Casa\API_Rest\obj\Debug\netcoreapp3.1\API_Rest.pdb
+C:\Users\ricar\OneDrive\Área de Trabalho\API-Casa\API_Rest\bin\Debug\netcoreapp3.1\publish\web.config
+C:\Users\ricar\OneDrive\Área de Trabalho\API-Casa\API_Rest\bin\Debug\netcoreapp3.1\publish\API_Rest.deps.json
+C:\Users\ricar\OneDrive\Área de Trabalho\API-Casa\API_Rest\bin\Debug\netcoreapp3.1\publish\API_Rest.runtimeconfig.json
+C:\Users\ricar\OneDrive\Área de Trabalho\API-Casa\API_Rest\bin\Debug\netcoreapp3.1\publish\appsettings.Development.json
+C:\Users\ricar\OneDrive\Área de Trabalho\API-Casa\API_Rest\bin\Debug\netcoreapp3.1\publish\appsettings.json

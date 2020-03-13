@@ -84,8 +84,8 @@ namespace API_Rest.Controllers
             }
             catch
             {
-                Response.StatusCode = 400;
-                return new ObjectResult(new { msg = "Requisição Inválida!" });
+                Response.StatusCode = 404;
+                return new ObjectResult(new { msg = "Usuário não encontrado!" });
             }
         }
 

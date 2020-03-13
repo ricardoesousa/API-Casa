@@ -10,7 +10,7 @@ namespace API_Rest.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-   // [Authorize]
+    [Authorize]
     public class EventosController : ControllerBase
     {
 
@@ -105,15 +105,13 @@ namespace API_Rest.Controllers
                 var e = database.Eventos.First(etemp => etemp.Id == evento.Id);
                 if (e != null)
                 {
-                    if (database.Casas.Any(etemp => etemp.Id == evento.CasaId))
-                    {
                         var casa = database.Casas.Where(etemp => etemp.Id == evento.CasaId).FirstOrDefault();
                         e.Nome = evento.Nome != null ? evento.Nome : e.Nome;
                         e.Capacidade = evento.Capacidade != 0 ? evento.Capacidade : e.Capacidade;
                         e.Data = evento.Data != null ? evento.Data : e.Data;
                         e.Preco = evento.Preco != 0 ? evento.Preco : e.Preco;
                         e.Genero = evento.Genero != null ? evento.Genero : e.Genero;
-                        e.Casa = evento.CasaId != 0 ? casa : e.Casa;
+                        e.Casa = casa != null ? casa : e.Casa;
                         if (evento.Data < DateTime.Now)
                         {
                             Response.StatusCode = 406;
@@ -122,12 +120,6 @@ namespace API_Rest.Controllers
                         database.SaveChanges();
                         Response.StatusCode = 200;
                         return new ObjectResult(new { msg = "Evento alterado com sucesso!" });
-                    }
-                    else
-                    {
-                        Response.StatusCode = 404;
-                        return new ObjectResult(new { msg = "A casa selecionada não existe!" });
-                    }
                 }
                 else
                 {
